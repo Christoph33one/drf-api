@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import posts
+from .models import Post
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -10,7 +10,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     # validates an image each time it is uploaded or a post is created!
     def validate_image(self, value):
-        if value.size > 1024 * 1024 * 2: # this give a smb size limit for the images
+        if value.size > 1024 * 1024 * 2: # this give a MB size limit for all images
             # raise errors - image to big in MB
             raise serializers.ValidationError(
                 'Image size larger than 2MB!'
@@ -35,6 +35,6 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = [
             'id', 'owner', 'is_owner', 'profile_id',
-            'profile_image', 'created_at', 'updated_on',
+            'profile_image', 'created_at', 'updated_at',
             'title', 'content', 'image', 'image_filter'
         ]

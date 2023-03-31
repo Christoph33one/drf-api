@@ -31,6 +31,7 @@ class Post(models.Model):
     image = models.ImageField(
         upload_to='images/', default='../https://res.cloudinary.com/dqgs0kltd/image/upload/v1679997904/default_profile_alsdm3.jpg', blank=True
     )
+    # image post filter
     image_filter = models.CharField(
         max_length=32, choices=image_filter_choices, default='normal'
     )
