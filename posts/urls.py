@@ -3,4 +3,5 @@ from posts import views
 
 urlpatterns = [
     path('posts/', views.PostList.as_view()),
+    path('posts/<int:pk>/', views.PostDetail.as_view()) # int:pk becuase pk is a number
 ]

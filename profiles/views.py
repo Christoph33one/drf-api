@@ -35,9 +35,9 @@ class ProfileDetail(APIView):
             # if not correct, throw 404 error and not return the instance.
             self.check_object_permissions(self.request, profile)
             return profile
+            # if not id found, raise a 404 error in the API
         except Profile.DoesNotExist:
             raise Http404
-            # if not id found, raise a 404 error in the API
 
     # GET profile method and return in the API
     def get(self, request, pk):
@@ -47,12 +47,13 @@ class ProfileDetail(APIView):
         )
         return Response(serializer.data)
 
-    # PUT method
+    # PUT method (edit)
     def put(self, request, pk):
         profile = self.get_object(pk)
         serializer = ProfileSerializer(
             profile, data=request.data, context={'request': request}
             )
+        # if updated data is vaild then save data and return data and update the responce
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
