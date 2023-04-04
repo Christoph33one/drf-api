@@ -6,13 +6,14 @@ from .serializers import CommentSerializer, CommentDetailSerializer
 
 
 class CommentList(generics.ListCreateAPIView):
-    # so unauthorised users don't comment.
+    """
+    List comments or create a comment if logged in.
+    """
     serializer_class = CommentSerializer
-    permissions_classes = [permissions.IsAuthenticatedOrReadOnly]
-    # show what model and it's instances e.g if a user wants to view all their comments only!
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Comment.objects.all()
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['posts']
+    filterset_fields = ['post']
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
