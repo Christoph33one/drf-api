@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+import re
 
 if os.path.exists('env.py'):
     import env
@@ -110,10 +111,11 @@ if 'CLIENT_ORIGIN' in os.environ:
     CORS_ALLOWED_ORIGINS = [
         os.environ.get('CLIENT_ORIGIN')
      ]
-else:
+if 'CLIENT_ORIGIN_DEV' in os.environ:
+    extracted_url = re.match(r'^.+-', os.environ.get('CLIENT_ORIGIN_DEV', ''), re.IGNORECASE).group(0)
     CORS_ALLOWED_ORIGIN_REGEXES = [
-        r"^https://.*\.gitpod\.io$",
-     ]
+        rf"{extracted_url}(eu|us)\d+\w\.gitpod\.io$",
+    ]
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -154,10 +156,6 @@ else:
          'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
      }
 
-
-
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -189,7 +187,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
